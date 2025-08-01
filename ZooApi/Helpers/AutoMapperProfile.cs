@@ -9,6 +9,7 @@ namespace ZooApi.Helpers
         public AutoMapperProfile()
         {
             CreateMap<FishDto, Fish>().ReverseMap();
+            CreateMap<BirdDto, Bird>().ReverseMap();
         }
     }
 }

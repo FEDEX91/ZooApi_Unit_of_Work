@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using ZooApi.DTOs;
 using ZooApi.Interfaces;
 
 namespace ZooApi.Controllers
@@ -8,10 +10,12 @@ namespace ZooApi.Controllers
     public class BirdsController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public BirdsController(IUnitOfWork unitOfWork)
+        public BirdsController(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -19,6 +23,15 @@ namespace ZooApi.Controllers
         {
             var birds = await _unitOfWork.Birds.GetAllAsync();
             return Ok(birds);
+        }
+
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            var bird = await _unitOfWork.Birds.GetByIdAsync(id);
+            if (bird is null) return NotFound($"{id} not found.");
+            var result = _mapper.Map<BirdDto>(bird);
+            return Ok(result);
         }
     }
 }
