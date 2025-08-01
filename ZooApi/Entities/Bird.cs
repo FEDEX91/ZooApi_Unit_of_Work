@@ -1,6 +1,6 @@
 ﻿namespace ZooApi.Entities
 {
-    public class Fishes
+    public class Bird
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;

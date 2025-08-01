@@ -7,14 +7,14 @@ namespace ZooApi.Repositories
     public class UnitOfWork : IUnitOfWork
     {
         private readonly DataContext _context;
-        public IRepository<Birds> Birds { get; }
-        public IRepository<Fishes> Fishes { get; }
+        public IRepository<Bird> Birds { get; }
+        public IRepository<Fish> Fishes { get; }
 
         public UnitOfWork(DataContext context)
         {
             _context = context;
-            Birds = new Repository<Birds>(_context);
-            Fishes = new Repository<Fishes>(_context);
+            Birds = new Repository<Bird>(_context);
+            Fishes = new Repository<Fish>(_context);
         }
 
         public async Task<int> CompleteAsync()

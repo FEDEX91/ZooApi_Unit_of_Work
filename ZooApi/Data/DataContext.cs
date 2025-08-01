@@ -11,7 +11,7 @@ namespace ZooApi.Data
             
         }
 
-        public DbSet<Birds> Birds { get; set; }
-        public DbSet<Fishes> Fishes { get; set; }
+        public DbSet<Bird> Birds { get; set; }
+        public DbSet<Fish> Fishes { get; set; }
     }
 }

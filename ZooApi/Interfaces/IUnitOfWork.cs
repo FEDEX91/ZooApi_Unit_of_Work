@@ -4,8 +4,8 @@ namespace ZooApi.Interfaces
 {
     public interface IUnitOfWork
     {
-        IRepository<Birds> Birds { get; }
-        IRepository<Fishes> Fishes { get; }
+        IRepository<Bird> Birds { get; }
+        IRepository<Fish> Fishes { get; }
         Task<int> CompleteAsync();
     }
 }
