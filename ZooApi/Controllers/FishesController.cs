@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using ZooApi.DTOs;
 using ZooApi.Entities;
 using ZooApi.Interfaces;
@@ -10,9 +11,11 @@ namespace ZooApi.Controllers
     public class FishesController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
-        public FishesController(IUnitOfWork unitOfWork)
+        private readonly IMapper _mapper;
+        public FishesController(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -22,12 +25,22 @@ namespace ZooApi.Controllers
             return Ok(fishes);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> AddBird([FromBody] FishDto fish)
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetById(int id)
         {
-            await _unitOfWork.Fishes.AddAsync(new Fish { Name = fish.Name, Description = fish.Description, PhotoUrl = fish.PhotoUrl });
+            var fish = await _unitOfWork.Fishes.GetByIdAsync(id);
+            if (fish is null) return NotFound();
+            var result = _mapper.Map<FishDto>(fish);
+            return Ok(result);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] FishDto fish)
+        {
+            var addFish = _mapper.Map<Fish>(fish);
+            await _unitOfWork.Fishes.AddAsync(addFish);
             await _unitOfWork.CompleteAsync();
-            return Ok(fish);
+            return Ok(addFish);
         }
     }
 }
